@@ -14,6 +14,10 @@ import { Route as AuthorityRouteImport } from './routes/authority'
 import { Route as CitizenRouteImport } from './routes/citizen'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as AuthorityIndexRouteImport } from './routes/authority.index'
+import { Route as AuthorityComplaintsRouteImport } from './routes/authority.complaints'
+import { Route as AuthorityManageRouteImport } from './routes/authority.manage'
+import { Route as AuthorityMonitoringRouteImport } from './routes/authority.monitoring'
 import { Route as CitizenIndexRouteImport } from './routes/citizen.index'
 import { Route as CitizenComplaintsRouteImport } from './routes/citizen.complaints'
 import { Route as CitizenMapRouteImport } from './routes/citizen.map'
@@ -45,6 +49,26 @@ const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthorityIndexRoute = AuthorityIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthorityRoute,
+} as any)
+const AuthorityComplaintsRoute = AuthorityComplaintsRouteImport.update({
+  id: '/complaints',
+  path: '/complaints',
+  getParentRoute: () => AuthorityRoute,
+} as any)
+const AuthorityManageRoute = AuthorityManageRouteImport.update({
+  id: '/manage',
+  path: '/manage',
+  getParentRoute: () => AuthorityRoute,
+} as any)
+const AuthorityMonitoringRoute = AuthorityMonitoringRouteImport.update({
+  id: '/monitoring',
+  path: '/monitoring',
+  getParentRoute: () => AuthorityRoute,
 } as any)
 const CitizenIndexRoute = CitizenIndexRouteImport.update({
   id: '/',
@@ -79,41 +103,52 @@ const CitizenReportRoute = CitizenReportRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/authority': typeof AuthorityRoute
+  '/authority': typeof AuthorityRouteWithChildren
   '/citizen': typeof CitizenRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/authority/complaints': typeof AuthorityComplaintsRoute
+  '/authority/manage': typeof AuthorityManageRoute
+  '/authority/monitoring': typeof AuthorityMonitoringRoute
   '/citizen/complaints': typeof CitizenComplaintsRoute
   '/citizen/map': typeof CitizenMapRoute
   '/citizen/notifications': typeof CitizenNotificationsRoute
   '/citizen/profile': typeof CitizenProfileRoute
   '/citizen/report': typeof CitizenReportRoute
+  '/authority/': typeof AuthorityIndexRoute
   '/citizen/': typeof CitizenIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/authority': typeof AuthorityRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/authority/complaints': typeof AuthorityComplaintsRoute
+  '/authority/manage': typeof AuthorityManageRoute
+  '/authority/monitoring': typeof AuthorityMonitoringRoute
   '/citizen/complaints': typeof CitizenComplaintsRoute
   '/citizen/map': typeof CitizenMapRoute
   '/citizen/notifications': typeof CitizenNotificationsRoute
   '/citizen/profile': typeof CitizenProfileRoute
   '/citizen/report': typeof CitizenReportRoute
+  '/authority': typeof AuthorityIndexRoute
   '/citizen': typeof CitizenIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/authority': typeof AuthorityRoute
+  '/authority': typeof AuthorityRouteWithChildren
   '/citizen': typeof CitizenRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/authority/complaints': typeof AuthorityComplaintsRoute
+  '/authority/manage': typeof AuthorityManageRoute
+  '/authority/monitoring': typeof AuthorityMonitoringRoute
   '/citizen/complaints': typeof CitizenComplaintsRoute
   '/citizen/map': typeof CitizenMapRoute
   '/citizen/notifications': typeof CitizenNotificationsRoute
   '/citizen/profile': typeof CitizenProfileRoute
   '/citizen/report': typeof CitizenReportRoute
+  '/authority/': typeof AuthorityIndexRoute
   '/citizen/': typeof CitizenIndexRoute
 }
 export interface FileRouteTypes {
@@ -124,23 +159,30 @@ export interface FileRouteTypes {
     | '/citizen'
     | '/login'
     | '/register'
+    | '/authority/complaints'
+    | '/authority/manage'
+    | '/authority/monitoring'
     | '/citizen/complaints'
     | '/citizen/map'
     | '/citizen/notifications'
     | '/citizen/profile'
     | '/citizen/report'
+    | '/authority/'
     | '/citizen/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/authority'
     | '/login'
     | '/register'
+    | '/authority/complaints'
+    | '/authority/manage'
+    | '/authority/monitoring'
     | '/citizen/complaints'
     | '/citizen/map'
     | '/citizen/notifications'
     | '/citizen/profile'
     | '/citizen/report'
+    | '/authority'
     | '/citizen'
   id:
     | '__root__'
@@ -149,17 +191,21 @@ export interface FileRouteTypes {
     | '/citizen'
     | '/login'
     | '/register'
+    | '/authority/complaints'
+    | '/authority/manage'
+    | '/authority/monitoring'
     | '/citizen/complaints'
     | '/citizen/map'
     | '/citizen/notifications'
     | '/citizen/profile'
     | '/citizen/report'
+    | '/authority/'
     | '/citizen/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AuthorityRoute: typeof AuthorityRoute
+  AuthorityRoute: typeof AuthorityRouteWithChildren
   CitizenRoute: typeof CitizenRouteWithChildren
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
@@ -201,6 +247,34 @@ declare module '@tanstack/react-router' {
       fullPath: '/register'
       preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/authority/': {
+      id: '/authority/'
+      path: '/'
+      fullPath: '/authority/'
+      preLoaderRoute: typeof AuthorityIndexRouteImport
+      parentRoute: typeof AuthorityRoute
+    }
+    '/authority/complaints': {
+      id: '/authority/complaints'
+      path: '/complaints'
+      fullPath: '/authority/complaints'
+      preLoaderRoute: typeof AuthorityComplaintsRouteImport
+      parentRoute: typeof AuthorityRoute
+    }
+    '/authority/manage': {
+      id: '/authority/manage'
+      path: '/manage'
+      fullPath: '/authority/manage'
+      preLoaderRoute: typeof AuthorityManageRouteImport
+      parentRoute: typeof AuthorityRoute
+    }
+    '/authority/monitoring': {
+      id: '/authority/monitoring'
+      path: '/monitoring'
+      fullPath: '/authority/monitoring'
+      preLoaderRoute: typeof AuthorityMonitoringRouteImport
+      parentRoute: typeof AuthorityRoute
     }
     '/citizen/': {
       id: '/citizen/'
@@ -247,6 +321,24 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthorityRouteChildren {
+  AuthorityComplaintsRoute: typeof AuthorityComplaintsRoute
+  AuthorityManageRoute: typeof AuthorityManageRoute
+  AuthorityMonitoringRoute: typeof AuthorityMonitoringRoute
+  AuthorityIndexRoute: typeof AuthorityIndexRoute
+}
+
+const AuthorityRouteChildren: AuthorityRouteChildren = {
+  AuthorityComplaintsRoute: AuthorityComplaintsRoute,
+  AuthorityManageRoute: AuthorityManageRoute,
+  AuthorityMonitoringRoute: AuthorityMonitoringRoute,
+  AuthorityIndexRoute: AuthorityIndexRoute,
+}
+
+const AuthorityRouteWithChildren = AuthorityRoute._addFileChildren(
+  AuthorityRouteChildren,
+)
+
 interface CitizenRouteChildren {
   CitizenComplaintsRoute: typeof CitizenComplaintsRoute
   CitizenMapRoute: typeof CitizenMapRoute
@@ -270,7 +362,7 @@ const CitizenRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AuthorityRoute: AuthorityRoute,
+  AuthorityRoute: AuthorityRouteWithChildren,
   CitizenRoute: CitizenRouteWithChildren,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
